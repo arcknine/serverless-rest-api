@@ -12,6 +12,7 @@ if offline_support.is_offline():
 else:
     dynamodb = boto3.resource('dynamodb')
 
+
 def get(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
@@ -31,8 +32,10 @@ def get(event, context):
 
     return response
 
+
 def __build_partition_key(event):
-    return ','.join([ event['application_id'], event['section_id'] ])
+    return ','.join([event['application_id'], event['section_id']])
+
 
 def __build_sort_key(event):
-    return ','.join([ event['listing_type'], event['listing_id'] ])
+    return ','.join([event['listing_type'], event['listing_id']])

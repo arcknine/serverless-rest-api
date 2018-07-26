@@ -5,14 +5,12 @@ import os
 import uuid
 import time
 
-IS_OFFLINE = os.environ.get('IS_OFFLINE')
+from list_views.utils import offline_support
 
-if IS_OFFLINE:
-    client = boto3.client('dynamodb',
-                          region_name='localhost',
-                          endpoint_url='http://localhost:8000')
+if offline_support.is_offline():
+    dynamodb = offline_support.dynamodb()
 else:
-    dynamodb = boto3.resource("dynamodb")
+    dynamodb = boto3.resource('dynamodb')
 
 
 def create(event, context):
