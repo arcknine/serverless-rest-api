@@ -1,0 +1,11 @@
+{
+  "name": "list-views-api",
+  "version": "1.0.0",
+  "description": "List Views API",
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.30",
+    "serverless-offline": "^3.25.6"
+  }
+}
