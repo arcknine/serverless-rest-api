@@ -18,10 +18,8 @@ def delete(event, context):
     item = ItemConstructor(data)
     item.itemize()
 
-    # delete the todo from the database
     table.delete_item(Key=item.primary_key)
 
-    # create a response
     response = {
         "statusCode": 200,
         "primaryKey": item.primary_key

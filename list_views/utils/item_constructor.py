@@ -23,6 +23,9 @@ class ItemConstructor():
         else:
             self.json_details = {}
 
+    '''
+    Only enforcing presence of partition_key
+    '''
     def __validate_keys(self):
         keys = [
             'application_id',

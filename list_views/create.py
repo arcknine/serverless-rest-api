@@ -15,7 +15,7 @@ else:
 
 def create(event, context):
     timestamp = int(time.time() * 1000)
-    data = json.loads(json.dumps(event)) # dictionary `event` -> json string -> json object
+    data = json.loads(json.dumps(event))
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
