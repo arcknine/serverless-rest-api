@@ -1,3 +1,5 @@
+import json
+
 from list_views.utils.constants import *
 
 class ItemConstructor():
@@ -15,9 +17,9 @@ class ItemConstructor():
                 SORT_KEY: self.__build_sort_key()
             }
 
-            self.json_details = self.json_details.update(self.primary_key)
-
-        return self
+            self.json_details.update(self.primary_key)
+        else:
+            self.json_details = {}
 
     def __validate_keys(self):
         keys = [

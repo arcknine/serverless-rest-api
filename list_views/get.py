@@ -13,25 +13,16 @@ else:
 
 def get(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
+    data = json.loads(json.dumps(event))
 
-    constructor = ItemConstructor(event)
-    item = constructor.itemize()
+    item = ItemConstructor(data)
+    item.itemize()
 
     result = table.get_item(Key=item.primary_key)
 
-    item = result.get('Item', '{}')
-
     response = {
         'statusCode': 200,
-        'body': json.dumps(item)
+        'body': json.dumps(result.get('Item', '{}'))
     }
 
     return response
-
-
-def __build_partition_key(event):
-    return ','.join([event['application_id'], event['section_id']])
-
-
-def __build_sort_key(event):
-    return ','.join([event['listing_type'], event['listing_id']])

@@ -15,22 +15,25 @@ else:
 
 def create(event, context):
     timestamp = int(time.time() * 1000)
+    data = json.loads(json.dumps(event)) # dictionary `event` -> json string -> json object
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
     item_details = {
-        'createdAt': timestamp,
-        'updatedAt': timestamp
-    }.update(event)
+        'createdAt': str(timestamp),
+        'updatedAt': str(timestamp)
+    }
 
-    constructor = ItemConstructor(item_details)
-    item = constructor.itemize()
+    item_details.update(data)
 
-    table.put_item(Item=item.json)
+    item = ItemConstructor(item_details)
+    item.itemize()
+
+    table.put_item(Item=item.json_details)
 
     response = {
         'statusCode': 200,
-        'body': json.dumps(item)
+        'body': item.json_details
     }
 
     return response
