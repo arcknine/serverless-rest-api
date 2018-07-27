@@ -49,14 +49,6 @@ functions:
           method: get
           cors: true
 
-  update:
-    handler: list_views/update.update
-    events:
-      - http:
-          path: list_views/{id}
-          method: put
-          cors: true
-
   delete:
     handler: list_views/delete.delete
     events:

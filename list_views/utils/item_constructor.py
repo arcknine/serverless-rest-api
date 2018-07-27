@@ -10,12 +10,14 @@ class ItemConstructor():
         self.primary_key = {}
         self.sort_key = ""
 
-    def itemize(self):
+    def itemize(self, only_partition_key=False):
         if self.__validate_keys():
             self.primary_key = {
-                PARTITION_KEY: self.__build_partition_key(),
-                SORT_KEY: self.__build_sort_key()
+                PARTITION_KEY: self.__build_partition_key()
             }
+
+            if not only_partition_key:
+                self.primary_key[SORT_KEY] = self.__build_sort_key()
 
             self.json_details.update(self.primary_key)
         else:
@@ -24,9 +26,7 @@ class ItemConstructor():
     def __validate_keys(self):
         keys = [
             'application_id',
-            'section_id',
-            'listing_type',
-            'listing_id'
+            'section_id'
         ]
 
         for key in keys:
