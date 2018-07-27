@@ -45,7 +45,31 @@ functions:
     handler: list_views/get.get
     events:
       - http:
-          path: list_views/{list_view_section}
+          path: list_views/{id}
+          method: get
+          cors: true
+
+  update:
+    handler: list_views/update.update
+    events:
+      - http:
+          path: list_views/{id}
+          method: put
+          cors: true
+
+  delete:
+    handler: list_views/delete.delete
+    events:
+      - http:
+          path: list_views/{id}
+          method: delete
+          cors: true
+
+  index:
+    handler: list_views/get_all.get_all
+    events:
+      - http:
+          path: list_views/
           method: get
           cors: true
 

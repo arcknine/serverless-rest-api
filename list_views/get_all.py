@@ -1,4 +1,4 @@
-def update(event, context):
+def get_all(event, context):
     response = {
         "statusCode": 200
     }

@@ -3,9 +3,7 @@ import os
 import json
 
 from list_views.utils import offline_support
-
-PARTITION_KEY = 'appId_sectionId'
-SORT_KEY = 'listingType_listingId'
+from list_views.utils.item_constructor import ItemConstructor
 
 if offline_support.is_offline():
     dynamodb = offline_support.dynamodb()
@@ -16,12 +14,10 @@ else:
 def get(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
-    result = table.get_item(
-        Key={
-            PARTITION_KEY: __build_partition_key(event),
-            SORT_KEY: __build_sort_key(event)
-        }
-    )
+    constructor = ItemConstructor(event)
+    item = constructor.itemize()
+
+    result = table.get_item(Key=item.primary_key)
 
     item = result.get('Item', '{}')
 
