@@ -1,7 +1,9 @@
+import os
 import time
+import json
 
-from list_views.utils import offline_support
 from list_views.utils.item_constructor import ItemConstructor
+from list_views.utils import offline_support
 
 if offline_support.is_offline():
     dynamodb = offline_support.dynamodb()
@@ -19,10 +21,12 @@ def update(event, context):
     item = ItemConstructor(data)
     item.itemize()
 
+    result = {}
+
     result = table.update_item(
         Key=item.primary_key,
-        ExpressionAttributeNames=item.attribute_names,
-        UpdateExpression=item.update_expression,
+        UpdateExpression=item.get_update_expression(),
+        ExpressionAttributeValues=item.get_attributes_values_expression(),
         ReturnValues='UPDATED_NEW'
     )
 

@@ -1,6 +1,8 @@
 import json
+import time
 
 from list_views.utils.constants import *
+from list_views.utils import exclude_keys
 
 class ItemConstructor():
 
@@ -22,6 +24,28 @@ class ItemConstructor():
             self.json_details.update(self.primary_key)
         else:
             self.json_details = {}
+
+    def get_attributes_values_expression(self):
+        timestamp = int(time.time() * 1000)
+        details = self.__json_details_without_partition_key()
+        expr = {}
+
+        for key in details.keys():
+            expr[':%s' % key] = details[key]
+
+        expr[':updatedAt'] = str(timestamp)
+
+        return expr
+
+    def get_update_expression(self):
+        details = self.__json_details_without_partition_key()
+        expr = ['updatedAt = :updatedAt']
+
+        for key     in details.keys():
+            str = '%s = :%s' % (key, key)
+            expr.append(str)
+
+        return 'set ' + ','.join(expr)
 
     '''
     Only enforcing presence of partition_key
@@ -55,3 +79,15 @@ class ItemConstructor():
             keys.append(self.json_details.get(k))
 
         return '_'.join(keys)
+
+    def __json_details_without_partition_key(self):
+        excluded_keys = [
+            'application_id',
+            'section_id',
+            'listing_type',
+            'listing_id',
+            PARTITION_KEY,
+            SORT_KEY
+        ]
+
+        return exclude_keys(excluded_keys, self.json_details)

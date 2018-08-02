@@ -15,7 +15,7 @@ custom:
 provider:
   name: aws
   profile: ${opt:profile, 'default'}
-  runtime: python2.7
+  runtime: python3.6
   region: ${opt:region, 'ap-southeast-1'}
   stage: dev
   environment:
@@ -64,6 +64,15 @@ functions:
           path: list_views/
           method: get
           cors: true
+
+  update:
+    handler: list_views/update.update
+    events:
+      - http:
+          path: list_views/{id}
+          method: put
+          cors: true
+
 
 resources:
   Resources:
