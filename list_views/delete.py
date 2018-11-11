@@ -13,7 +13,22 @@ else:
 
 def delete(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
-    data = json.loads(json.dumps(event))
+
+    try:
+        event['pathParameters']
+    except:
+        params = event
+    else:
+        params = {}
+        params['section_id'] = event['pathParameters']['id']
+        params['application_id'] = '0'
+        if event['queryStringParameters'] is not None:
+            params['application_id'] = event['queryStringParameters']['application_id'] if 'application_id' in event['queryStringParameters'] else '0'
+            params['listing_type'] = event['queryStringParameters']['listing_type'] if 'listing_type' in event['queryStringParameters'] else '0'
+            params['listing_id'] = event['queryStringParameters']['listing_id'] if 'listing_id' in event['queryStringParameters'] else '0'
+
+    data = json.loads(json.dumps(params))
+
 
     item = ItemConstructor(data)
     item.itemize()

@@ -1,3 +1,4 @@
+import boto3
 import os
 import time
 import json
@@ -12,7 +13,14 @@ else:
 
 
 def update(event, context):
-    data = json.loads(json.dumps(event))
+    try:
+        event['body']
+    except:
+        params = event
+    else:
+        params = json.loads(event['body'])
+
+    data = json.loads(json.dumps(params))
 
     timestamp = int(time.time() * 1000)
 
@@ -32,7 +40,7 @@ def update(event, context):
 
     response = {
         "statusCode": 200,
-        'body': json.dumps(result.get('Item', '{}'))
+        'body': result.get('Attributes', {})
     }
 
     return response

@@ -16,7 +16,16 @@ else:
 
 def get_all(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
-    data = json.loads(json.dumps(event))
+
+    try:
+        event['pathParameters']
+    except:
+        params = event
+    else:
+        params = {}
+        params['section_id'] = event['pathParameters']['id']
+
+    data = json.loads(json.dumps(params))
 
     item = ItemConstructor(data)
     item.itemize(True)

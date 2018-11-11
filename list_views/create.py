@@ -15,7 +15,16 @@ else:
 
 def create(event, context):
     timestamp = int(time.time() * 1000)
-    data = json.loads(json.dumps(event))
+
+    try:
+        event['body']
+    except:
+        params = event
+    else:
+        params = json.loads(event['body'])
+
+    data = json.loads(json.dumps(params))
+
 
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 

@@ -1,9 +1,11 @@
 service: list-views-api
+
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
 
 custom:
+  stage: ${file(stages/${opt:stage, self:provider.stage}.yml)}
   dynamodb:
     start:
       port: 8000
@@ -14,12 +16,13 @@ custom:
 
 provider:
   name: aws
-  profile: ${opt:profile, 'default'}
+  profile: ${opt:profile, self:custom.stage.profile}
   runtime: python3.6
-  region: ${opt:region, 'ap-southeast-1'}
+  timeout: 30 # optional, in seconds, default is 6
+  region: ${opt:region, self:custom.stage.region}
   stage: dev
   environment:
-    IS_OFFLINE: "true"
+    IS_OFFLINE: ${self:custom.stage.environment.IS_OFFLINE}
     DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
   iamRoleStatements:
     - Effect: Allow

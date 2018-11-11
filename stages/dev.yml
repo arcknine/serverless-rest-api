@@ -1,0 +1,5 @@
+region: ap-southeast-1
+profile: spuul-dev
+db_deletion_policy: Delete
+environment:
+  IS_OFFLINE: False

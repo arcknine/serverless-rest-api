@@ -2,7 +2,7 @@ import os
 import boto3
 
 def is_offline():
-    return os.environ.get('IS_OFFLINE')
+    return os.environ.get('IS_OFFLINE') == "true"
 
 def dynamodb():
     endpoint_url = os.environ.get('ENDPOINT_URL', 'http://localhost:8000')
