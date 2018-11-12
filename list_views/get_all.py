@@ -36,7 +36,7 @@ def get_all(event, context):
 
     response = {
         'statusCode': 200,
-        'body': result.get('Items', '{}')
+        'body': json.dumps(result['Items'])
     }
 
     return response

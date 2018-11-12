@@ -36,7 +36,7 @@ def get(event, context):
 
     response = {
         'statusCode': 200,
-        'body': result.get('Item', {})
+        'body': json.dumps(result.get('Item', {}))
     }
 
     return response

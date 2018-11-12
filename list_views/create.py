@@ -42,7 +42,7 @@ def create(event, context):
 
     response = {
         'statusCode': 200,
-        'body': item.json_details
+        'body': json.dumps({"status":"SUCCESS"})
     }
 
     return response

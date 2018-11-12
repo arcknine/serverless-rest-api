@@ -40,7 +40,7 @@ def update(event, context):
 
     response = {
         "statusCode": 200,
-        'body': result.get('Attributes', {})
+        'body': json.dumps(result.get('Attributes', {}))
     }
 
     return response

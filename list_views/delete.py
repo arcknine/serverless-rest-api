@@ -37,7 +37,7 @@ def delete(event, context):
 
     response = {
         "statusCode": 200,
-        "primaryKey": item.primary_key
+        "body": json.dumps({"status":"SUCCESS"})
     }
 
     return response
